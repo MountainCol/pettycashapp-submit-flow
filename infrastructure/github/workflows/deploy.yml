@@ -1,0 +1,74 @@
+# Create the deployment workflow
+
+name: Deploy PettyCash Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'infrastructure/**'
+      - 'backend/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  deploy:
+    name: Deploy to AWS
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Install AWS CDK
+        run: npm install -g aws-cdk
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      
+      - name: Install Python dependencies
+        working-directory: ./infrastructure
+        run: |
+          pip install -r requirements.txt
+      
+      - name: CDK Bootstrap (if needed)
+        working-directory: ./infrastructure
+        run: |
+          cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/${{ secrets.AWS_REGION }}
+        continue-on-error: true
+      
+      - name: CDK Synth
+        working-directory: ./infrastructure
+        run: cdk synth
+        env:
+          CDK_DEFAULT_ACCOUNT: ${{ secrets.AWS_ACCOUNT_ID }}
+          CDK_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+      
+      - name: CDK Deploy
+        working-directory: ./infrastructure
+        run: cdk deploy --require-approval never
+        env:
+          CDK_DEFAULT_ACCOUNT: ${{ secrets.AWS_ACCOUNT_ID }}
+          CDK_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+      
+      - name: Output deployment info
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "Region: ${{ secrets.AWS_REGION }}"
+          echo "Account: ${{ secrets.AWS_ACCOUNT_ID }}"
+EOF

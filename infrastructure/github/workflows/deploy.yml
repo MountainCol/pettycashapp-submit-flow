@@ -71,4 +71,3 @@ jobs:
           echo "✅ Deployment completed successfully!"
           echo "Region: ${{ secrets.AWS_REGION }}"
           echo "Account: ${{ secrets.AWS_ACCOUNT_ID }}"
-EOF

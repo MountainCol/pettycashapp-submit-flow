@@ -16,10 +16,10 @@ class PettyCashStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # S3 Bucket for receipts
+        # S3 Bucket for receipts (with unique name)
         receipts_bucket = s3.Bucket(
             self, "ReceiptsBucket",
-            bucket_name="pettycash-receipts",
+            bucket_name=f"pettycash-receipts-{self.account}",
             cors=[
                 s3.CorsRule(
                     allowed_methods=[s3.HttpMethods.GET, s3.HttpMethods.PUT, s3.HttpMethods.POST],

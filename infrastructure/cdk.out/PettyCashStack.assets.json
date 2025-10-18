@@ -1,0 +1,34 @@
+{
+  "version": "34.0.0",
+  "files": {
+    "eb8e14ae6210fb4284f8bf925e274115e0eafdbd15f1103cbf791aa326047e48": {
+      "source": {
+        "path": "asset.eb8e14ae6210fb4284f8bf925e274115e0eafdbd15f1103cbf791aa326047e48",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
+          "objectKey": "eb8e14ae6210fb4284f8bf925e274115e0eafdbd15f1103cbf791aa326047e48.zip",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
+        }
+      }
+    },
+    "f7940ebdf9a7c3d6098ce66ae563bfbdca649d2c46981e38c969a0e81c1d116b": {
+      "source": {
+        "path": "PettyCashStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
+          "objectKey": "f7940ebdf9a7c3d6098ce66ae563bfbdca649d2c46981e38c969a0e81c1d116b.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
